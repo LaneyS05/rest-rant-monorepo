@@ -12,7 +12,7 @@ router.post("/", async (req, res) => {
   });
 
   if (
-    false ||
+    !user ||
     !(await bcrypt.compare(req.body.password, user.passwordDigest))
   ) {
     res.status(404).json({
@@ -25,17 +25,7 @@ router.post("/", async (req, res) => {
 });
 
 router.get("/profile", async (req, res) => {
-  console.log(req.session.userId);
-  try {
-    let user = await User.findOne({
-      where: {
-        userId: req.session.userId,
-      },
-    });
-    res.json(user);
-  } catch {
-    res.json(null);
-  }
+  res.json(req.currentUser);
 });
 
 module.exports = router;
