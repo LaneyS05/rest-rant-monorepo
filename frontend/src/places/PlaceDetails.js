@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router";
 import CommentCard from "./CommentCard";
 import NewCommentForm from "./NewCommentForm";
+import currentUser from "../contexts/CurrentUser";
 
 function PlaceDetails() {
   const { placeId } = useParams();
@@ -93,6 +94,21 @@ function PlaceDetails() {
     });
   }
 
+  let placeActions = null;
+
+  if (currentUser?.role === "admin") {
+    placeActions = (
+      <>
+        <a className="btn btn-warning" onClick={editPlace}>
+          Edit
+        </a>
+        <button type="submit" className="btn btn-danger" onClick={deletePlace}>
+          Delete
+        </button>
+      </>
+    );
+  }
+
   return (
     <main>
       <div className="row">
@@ -114,6 +130,7 @@ function PlaceDetails() {
           </h3>
           <h4>Serving {place.cuisines}.</h4>
           <br />
+          {placeActions}
           <a className="btn btn-warning" onClick={editPlace}>
             Edit
           </a>
